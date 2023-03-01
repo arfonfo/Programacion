@@ -18,17 +18,47 @@ public class VehiculoConMotor extends Vehiculo{
 
     public VehiculoConMotor(int potencia, String mod, int p, int d, int m, int a) {
         super(mod, p, d, m, a);
-        this.setPotencia(potencia);
+        try {
+            if(potencia < 0)
+                throw new PotenciaIncorrecta();
+            this.potencia = potencia;
+        } catch (PotenciaIncorrecta e) {
+            System.out.println("Error " + e);
+            this.potencia = 0;
+        }catch(Exception e){
+            System.out.println("Algo ha fallado");
+            this.potencia = 0;
+        }
     }
 
     public VehiculoConMotor(int potencia, String mod, int p, Fecha f) {
         super(mod, p, f);
-        this.setPotencia(potencia);
+        try {
+            if(potencia < 0)
+                throw new PotenciaIncorrecta();
+            this.potencia = potencia;
+        } catch (PotenciaIncorrecta e) {
+            System.out.println("Error " + e);
+            this.potencia = 0;
+        }catch(Exception e){
+            System.out.println("Algo ha fallado");
+            this.potencia = 0;
+        }
     }
 
     public VehiculoConMotor(int potencia, Vehiculo v) {
         super(v);
-        this.setPotencia(potencia);
+        try {
+            if(potencia < 0)
+                throw new PotenciaIncorrecta();
+            this.potencia = potencia;
+        } catch (PotenciaIncorrecta e) {
+            System.out.println("Error " + e);
+            this.potencia = 0;
+        }catch(Exception e){
+            System.out.println("Algo ha fallado");
+            this.potencia = 0;
+        }
     }
     
     public VehiculoConMotor(VehiculoConMotor vm){

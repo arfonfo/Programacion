@@ -29,7 +29,17 @@ public class Moto extends VehiculoConMotor{
         super(potencia, mod, p, d, m, a);
         this.matricula = matricula;
         this.propietario = propietario;
-        this.setNumRevisiones(numRev);
+        try {
+            if(numRev < 0)
+                throw new ArithmeticException("El número de revisiones no puede ser negativo");
+            this.numRevisiones = numRev;
+        } catch (ArithmeticException e) {
+            System.out.println("Error " + e);
+            this.numRevisiones = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha ido mal");
+            this.numRevisiones = 0;
+        }
         this.kms = km;
         this.gastos = gast;
     }
@@ -38,7 +48,17 @@ public class Moto extends VehiculoConMotor{
         super(potencia, mod, p, f);
         this.matricula = matricula;
         this.propietario = propietario;
-        this.setNumRevisiones(numRev);
+        try {
+            if(numRev < 0)
+                throw new ArithmeticException("El número de revisiones no puede ser negativo");
+            this.numRevisiones = numRev;
+        } catch (ArithmeticException e) {
+            System.out.println("Error " + e);
+            this.numRevisiones = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha ido mal");
+            this.numRevisiones = 0;
+        }
         this.kms = km;
         this.gastos = gast;
     }
@@ -47,7 +67,17 @@ public class Moto extends VehiculoConMotor{
         super(potencia, v);
         this.matricula = matricula;
         this.propietario = propietario;
-        this.setNumRevisiones(numRev);
+        try {
+            if(numRev < 0)
+                throw new ArithmeticException("El número de revisiones no puede ser negativo");
+            this.numRevisiones = numRev;
+        } catch (ArithmeticException e) {
+            System.out.println("Error " + e);
+            this.numRevisiones = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha ido mal");
+            this.numRevisiones = 0;
+        }
         this.kms = km;
         this.gastos = gast;
     }
@@ -56,7 +86,17 @@ public class Moto extends VehiculoConMotor{
         super(vm);
         this.matricula = matricula;
         this.propietario = propietario;
-        this.setNumRevisiones(numRev);
+        try {
+            if(numRev < 0)
+                throw new ArithmeticException("El número de revisiones no puede ser negativo");
+            this.numRevisiones = numRev;
+        } catch (ArithmeticException e) {
+            System.out.println("Error " + e);
+            this.numRevisiones = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha ido mal");
+            this.numRevisiones = 0;
+        }
         this.kms = km;
         this.gastos = gast;
     }

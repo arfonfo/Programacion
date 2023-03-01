@@ -19,13 +19,33 @@ public class Vehiculo {
     
     public Vehiculo(String mod, int p, int d, int m, int a){
         this.modelo = mod;
-        this.setPrecio(p);
+        try {
+            if(p < 0)
+            throw new PrecioIncorrecto("El precio no puede ser negativo");
+        this.precio = p;
+        } catch (PrecioIncorrecto e) {
+            System.out.println("Error " + e);
+            this.precio = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha fallado");
+            this.precio = 0;
+        }
         this.fechaCompra = new Fecha(d, m, a);
     }
     
     public Vehiculo(String mod, int p, Fecha f){
         this.modelo = mod;
-        this.setPrecio(p);
+        try {
+            if(p < 0)
+            throw new PrecioIncorrecto("El precio no puede ser negativo");
+        this.precio = p;
+        } catch (PrecioIncorrecto e) {
+            System.out.println("Error " + e);
+            this.precio = 0;
+        } catch(Exception e){
+            System.out.println("Algo ha fallado");
+            this.precio = 0;
+        }
         this.fechaCompra = f;
     }
     
@@ -52,6 +72,7 @@ public class Vehiculo {
         this.precio = precio;
         } catch (PrecioIncorrecto e) {
             System.out.println("Error " + e);
+            // No le asignamos el valor 0 porque se quedaría con el valor anterior de precio
         } catch(Exception e){
             System.out.println("Algo ha fallado");
         }

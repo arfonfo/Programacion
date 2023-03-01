@@ -76,7 +76,45 @@ public class Principal {
             if(vehiculos[i] != null)
                 System.out.println("\n" + vehiculos[i].toString());
         }
+
+                // Pruebas para borrar luego
         
+        Vehiculo v3 = new Vehiculo("Ford", 300, f);
+        System.out.println(v3.getPrecio());
+        
+        VehiculoConMotor v4 = new VehiculoConMotor(-200, v3);
+        System.out.println(v4.getPotencia());
+        
+        // Prueba de instanceof
+        if(m1 instanceof Vehiculo){
+            System.out.println("m1 es un vehículo");
+        }
+
+        if(m1 instanceof VehiculoConMotor){
+            System.out.println("m1 es un vehículo con motor");
+        }
+        
+        // Pruebas de casteo
+        Moto m2 = m1;
+        
+        System.out.println(m2.toString());
+        
+        // Ejemplo de DownCasting
+        // Solo puede acceder a los métodos que tienen en común
+        v1=m2;
+        System.out.println(v1.toString());
+        if(v1 instanceof Moto)
+            System.out.println("El vehículo v1 es una Moto");
+        
+        // Aunque le hagamos apuntar a un VehiculoConMotor no puede usar los métodos propios de esa clase si no los tiene en común
+        v1 = new VehiculoConMotor(1200, v1);
+        if(v1 instanceof VehiculoConMotor)
+            System.out.println("El vehículo v1 es un VehículoConMotor");
+        
+        // Ejemplo de UpCasting
+        // Para poder usar los métodos de VehículoConMotor es necesario que casteemos v1, ya que lo declaramos al inicio como Vehículo
+        // y solo apunta a un VehiculoConMotor
+        ((VehiculoConMotor)v1).setPotencia(2200);
         
         
     }
