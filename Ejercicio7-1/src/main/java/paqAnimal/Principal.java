@@ -48,6 +48,8 @@ public class Principal {
         // h1 tiene un nuevo hijo
         h1.tenerHijos("Raquel", 20);
         
+        System.out.println(h1.toString());
+        
         // h1 muere
         h1.morir();
         

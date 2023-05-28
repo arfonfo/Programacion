@@ -71,6 +71,13 @@ public class Vertebrado extends Animal{
         super.setAnimal(v.getPeso(), v.getFechaNac());
         this.setNumVertebras(numVertebras);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Vertebrado{" + "numVertebras=" + numVertebras + '}';
+    }
+    
+    
     
         
         

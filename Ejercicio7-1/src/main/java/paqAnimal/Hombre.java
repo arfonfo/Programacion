@@ -1,6 +1,7 @@
 
 package paqAnimal;
 
+import java.util.Arrays;
 import paqFecha.Fecha;
 
 /**
@@ -112,9 +113,10 @@ public class Hombre extends Vertebrado{
             vivo = false;
             return true;
         } catch (Exception e) {
-            System.out.println("Error " + e);
+            System.out.println("Error " + e.getMessage());
+            return false;
         }
-        return false;
+        
     }
     
     public void tenerHijos(String nomHijo, int edadHijo){
@@ -140,7 +142,7 @@ public class Hombre extends Vertebrado{
         int peq = this.edadHijos[0];
         
         for (int i = 0; i < this.edadHijos.length; i++) {
-            if(this.edadHijos[i] < i)
+            if(this.edadHijos[i] < peq)
                 peq = edadHijos[i];
         }
         return peq;
@@ -148,13 +150,22 @@ public class Hombre extends Vertebrado{
     
     // Devuelve el nombre del hijo más joven
     public String nombreHijoMenor(){
-        int peq = this.edadHijos[0];
         
-        for (int i = 0; i < this.edadHijos.length; i++) {
-            if(this.edadHijos[i] < i)
-                peq = i;
+        int pos = 0;
+        for(int i = 0; i<this.numHijos; i++){
+            if(this.edadHijos[i]<this.edadHijos[pos])
+                pos=i;
         }
-        return this.namesHijos[peq];
+        
+//        int peq = this.edadHijos[0];
+//        int pos = 0;
+//        for (int i = 0; i < this.edadHijos.length; i++) {
+//            if(this.edadHijos[i] < peq){
+//                peq = edadHijos[i];
+//                pos = i;
+//            }
+//        }
+        return namesHijos[pos];
     }
     
     public int lugarNombreHijo(String n){
@@ -172,13 +183,14 @@ public class Hombre extends Vertebrado{
             return namesHijos[pos-1];
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Error " + e);
+            return "Nombre no disponible";
         }
-        return "Nombre no disponible";
+        
     }
 
     @Override
     public String toString() {
-        return "Hombre: " + "\nnombre=" + nombre + "\nvivo=" + vivo + "\nnumHijos=" + numHijos + "\nnamesHijos=" + namesHijos + "\nedadHijos=" + edadHijos;
+        return super.toString() + "Hombre: " + "\nnombre=" + nombre + "\nvivo=" + vivo + "\nnumHijos=" + numHijos + "\nnamesHijos=" + Arrays.toString(namesHijos) + "\nedadHijos=" + Arrays.toString(edadHijos);
     }
     
     

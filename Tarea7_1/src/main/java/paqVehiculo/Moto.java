@@ -2,8 +2,6 @@
 package paqVehiculo;
 
 import java.util.Arrays;
-import paqFecha.Fecha;
-import paqMotor.VehiculoConMotor;
 /**
  *
  * @author alfon
@@ -27,12 +25,14 @@ public class Moto extends VehiculoConMotor{
 
     public Moto(String mod, int p, int d, int m, int a, int potencia, String matricula, String propietario, int numRev, int[] km, int[] gast) {
         super(potencia, mod, p, d, m, a);
-        this.matricula = matricula;
-        this.propietario = propietario;
         try {
             if(numRev < 0)
                 throw new ArithmeticException("El número de revisiones no puede ser negativo");
             this.numRevisiones = numRev;
+            this.matricula = matricula;
+            this.propietario = propietario;
+            this.kms = km;
+            this.gastos = gast;
         } catch (ArithmeticException e) {
             System.out.println("Error " + e);
             this.numRevisiones = 0;
@@ -40,8 +40,7 @@ public class Moto extends VehiculoConMotor{
             System.out.println("Algo ha ido mal");
             this.numRevisiones = 0;
         }
-        this.kms = km;
-        this.gastos = gast;
+        
     }
 
     public Moto(String matricula, String propietario, int numRev, int potencia, String mod, int p, Fecha f, int[] km, int[] gast) {
@@ -183,8 +182,7 @@ public class Moto extends VehiculoConMotor{
     }
     
     public void setMoto(Vehiculo v, int potencia, String matricula, String propietario, int numRev, int[] km, int[] gast){
-        super.setVehiculo(v);
-        super.setPotencia(potencia);
+        super.setVehiculoConMotor(potencia, v);
         this.matricula = matricula;
         this.propietario = propietario;
         this.setNumRevisiones(numRev);
@@ -207,38 +205,70 @@ public class Moto extends VehiculoConMotor{
     
     // Métodos propios de Moto
     protected int[] ordenKms(){
-        Arrays.sort(this.kms);
+        int aux=0;
+        boolean ordenado=false;
+        while(!ordenado){
+            ordenado=true;
+            for(int i = 0; i < this.numRevisiones-1; i++){
+                if(this.kms[i]> this.kms[i+1]){
+                    aux = this.kms[i];
+                    this.kms[i]=this.kms[i+1];
+                    this.kms[i+1]=aux;
+                    ordenado=false;
+                }
+            }
+        }
+//        Arrays.sort(this.kms);
         return this.kms;
     }
     
     protected int lugarRevisionMasCara(){
-        int masCara = 0;
-        for (int i = 0; i < gastos.length; i++) {
-            if(gastos[i] > masCara)
-                masCara = i;
+        int pos=0;
+        for (int i = 0; i < this.gastos.length; i++) {
+            if(this.gastos[i] > this.gastos[pos])
+                pos=i;
         }
-        return masCara;
+        return pos;
+//        int posicion = 0;
+//        int masCara = 0;
+//        for (int i = 0; i < gastos.length; i++) {
+//            if(gastos[i] > masCara){
+//                masCara = gastos[i];
+//                posicion = i;
+//            }
+//                
+//        }
+//        return posicion;
     }
     
     protected int posicionRevision(int pos){
         try {
-            if(this.numRevisiones==0)
-                throw new IndexOutOfBoundsException("Este vehículo no ha pasado ninguna revisión todavía");
+            if(this.numRevisiones==0 || this.numRevisiones < pos)
+                throw new IndexOutOfBoundsException("Este vehículo no ha pasado ninguna revisión todavía\nO la posición indicada no corresponde a ninguna revisión");
             return kms[pos];
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Error " + e);
+            return kms[0];
         }
-        return kms[0];
     }
     
     public void tenerRevision(int km, int gas){
-        for (int i = 0; i < kms.length; i++) {
-            if(this.kms[i]==0){
-                this.kms[i]=km;
-                this.gastos[i]=gas;
-                this.numRevisiones++;
-                break;
-            }
+        if(this.numRevisiones<this.kms.length){
+            this.kms[this.numRevisiones]=km;
+            this.gastos[this.numRevisiones]=gas;
+            this.numRevisiones += 1;
+            System.out.println("Revisión pasada con éxito");
+        }else{
+            System.out.println("No se pueden pasar más revisiones");
         }
+        
+//        for (int i = 0; i < kms.length; i++) {
+//            if(this.kms[i]==0){
+//                this.kms[i]=km;
+//                this.gastos[i]=gas;
+//                this.numRevisiones++;
+//                break;
+//            }
+//        }
     }
 }

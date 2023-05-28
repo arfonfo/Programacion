@@ -1,7 +1,5 @@
 
 package paqVehiculo;
-
-import paqFecha.Fecha;
 /**
  *
  * @author alfon
@@ -17,28 +15,31 @@ public class Vehiculo {
         this.fechaCompra = new Fecha();
     }
     
-    public Vehiculo(String mod, int p, int d, int m, int a){
-        this.modelo = mod;
-        try {
-            if(p < 0)
-            throw new PrecioIncorrecto("El precio no puede ser negativo");
-        this.precio = p;
-        } catch (PrecioIncorrecto e) {
-            System.out.println("Error " + e);
-            this.precio = 0;
+    
+    public Vehiculo(String mod, int p, int d, int m, int a) {
+        try{
+            this.modelo = mod;
+            try {
+                if(p < 0)
+                    throw new PrecioIncorrecto("El precio no puede ser negativo");
+                this.precio = p;
+            } catch (PrecioIncorrecto e) {
+                System.out.println("Error " + e.getMessage());
+                this.precio = 0;
+            }
+            this.fechaCompra = new Fecha(d, m, a);
         } catch(Exception e){
-            System.out.println("Algo ha fallado");
-            this.precio = 0;
+            System.out.println("Error general" + e.getMessage());
         }
-        this.fechaCompra = new Fecha(d, m, a);
+        
     }
     
     public Vehiculo(String mod, int p, Fecha f){
         this.modelo = mod;
         try {
             if(p < 0)
-            throw new PrecioIncorrecto("El precio no puede ser negativo");
-        this.precio = p;
+                throw new PrecioIncorrecto("El precio no puede ser negativo");
+            this.precio = p;
         } catch (PrecioIncorrecto e) {
             System.out.println("Error " + e);
             this.precio = 0;
@@ -65,11 +66,11 @@ public class Vehiculo {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(int precio){
         try {
             if(precio < 0)
-            throw new PrecioIncorrecto("El precio no puede ser negativo");
-        this.precio = precio;
+                throw new PrecioIncorrecto("El precio no puede ser negativo");
+            this.precio = precio;
         } catch (PrecioIncorrecto e) {
             System.out.println("Error " + e);
             // No le asignamos el valor 0 porque se quedaría con el valor anterior de precio

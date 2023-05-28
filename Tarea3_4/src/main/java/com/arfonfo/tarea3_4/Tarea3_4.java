@@ -6,6 +6,7 @@ public class Tarea3_4 {
 
     public static void main(String[] args) {
         int ejercicio;
+        
         Scanner teclado = new Scanner(System.in);
 
         do {
@@ -14,7 +15,7 @@ public class Tarea3_4 {
             System.out.println("*******************************************************");
             System.out.println("Introduce el número del ejercicio que quieres realizar: ");
             System.out.println("1. Cálculo de una ecuación de segundo grado");
-            System.out.println("2. Máximo de los enteros generados al azar");
+            System.out.println("2. Media de los enteros generados al azar");
             System.out.println("3. Sumar potencias de 2 hasta el número que introduzcas");
             System.out.println("4. Cuenta los números pares hasta introducir -1");
             System.out.println("5. Genera al azar un número entre 1 y 10 y devuelve su tabla de multiplicar");
@@ -29,9 +30,7 @@ public class Tarea3_4 {
                     System.out.println("Salió del Programa");
                     break;
                 case 1:
-                    double a,
-                     b,
-                     c;
+                    double a, b, c;
                     System.out.println("Introduce el valor de ax²: ");
                     a = teclado.nextDouble();
                     System.out.println("Introduce el valor de bx: ");
@@ -42,14 +41,9 @@ public class Tarea3_4 {
                     break;
                 case 2:
                     int num;
-                    System.out.println("Introduce un número entero entre 1 y 100: ");
+                    System.out.println("Introduce un número entero: ");
                     num = teclado.nextInt();
-                    if (num >= 1 && num <= 100) {
-                        System.out.println("El mayor de los " + num + " números generados al azar es " + media_aritmetica(num));
-                    } else {
-                        System.out.println("No ha introducido un número entre 1 y 100");
-                    }
-
+                    System.out.println("La media de los " + num + " números generados al azar es " + media_aritmetica(num));
                     break;
                 case 3:
                     int numPotencia;
@@ -99,25 +93,25 @@ public class Tarea3_4 {
     }
 
     public static int media_aritmetica(int numero) {
-        int max = 0, aleatorio;
+        int suma = 0, media = 0, aleatorio;
 
         for (int i = 1; i <= numero; i++) {
-            aleatorio = (int) (Math.random() * i);
+            aleatorio = (int) ((Math.random() * 100)+1);
             System.out.print(aleatorio + " ");
-            if (aleatorio >= max) {
-                max = aleatorio;
-            }
+            suma += aleatorio;
         }
+        
+        media = suma/numero;
         
         System.out.println("");
         
-        return max;
+        return media;
     }
 
     public static int suma_potencias(int numero) {
         int suma = 0;
         for (int i = 0; i < numero; i++) {
-            suma += Math.pow(i, 2);
+            suma += Math.pow(2, i);
         }
         return suma;
     }
