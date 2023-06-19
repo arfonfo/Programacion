@@ -14,7 +14,7 @@ import java.util.List;
 public class MySQLMatriculaDAO implements MatriculaDAO{
     
     final String INSERT = "insert into matricula() values()";
-    final String UPDATE = "update matricula set ";
+    final String UPDATE = "update matricula set alumno = ?, asignatura = ?, fecha = ?, nota = ?";
     final String DELETE =
     final String GETALL =
     final String GETONE =
