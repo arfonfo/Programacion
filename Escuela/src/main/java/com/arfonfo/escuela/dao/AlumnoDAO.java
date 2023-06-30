@@ -1,7 +1,6 @@
 package com.arfonfo.escuela.dao;
 
 import com.arfonfo.escuela.Alumno;
-import java.util.List;
 
 /**
  *
