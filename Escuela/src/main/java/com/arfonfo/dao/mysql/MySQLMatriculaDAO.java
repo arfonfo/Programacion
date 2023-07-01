@@ -13,11 +13,14 @@ import java.util.List;
  */
 public class MySQLMatriculaDAO implements MatriculaDAO{
     
-    final String INSERT = "insert into matricula() values()";
-    final String UPDATE = "update matricula set alumno = ?, asignatura = ?, fecha = ?, nota = ?";
-    final String DELETE =
-    final String GETALL =
-    final String GETONE =
+    final String INSERT = "insert into matriculas(alumno, asignatura, fecha, nota) values(?, ?, ?, ?)";
+    final String UPDATE = "update matriculas set nota = ? where alumno = ? and asignatura = ? and fecha = ?";
+    final String DELETE = "delete from matriculas where alumno = ? and asignatura = ? and fecha = ?";
+    final String GETALL = "select alumno, asignatura, fecha, nota from matriculas";
+    final String GETONE = GETALL + "where alumno= ? and asignatura = ? and fecha = ?";
+    final String GETALU = GETALL + "alumno = ?";
+    final String GETCUR = GETALL + "fecha = ?";
+    final String GETASI = GETALL + "asignatura = ?";
 
     private Connection con;
     
@@ -46,10 +49,23 @@ public class MySQLMatriculaDAO implements MatriculaDAO{
     }
 
     @Override
-    public Matricula obtener(Long id) {
+    public Matricula obtener(Matricula.IdMatricula id) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public List<Matricula> obtenerPorAlumno(long alumno) throws DAOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    
+    @Override
+    public List<Matricula> obtenerPorAsignatura(long asignatura) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Matricula> obtenerPorCurso(int curso) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

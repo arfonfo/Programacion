@@ -9,39 +9,65 @@ import java.util.Objects;
  */
 public class Matricula {
     
-    private long alumno;
-    private long asignatura;
-    private int year;
+    private IdMatricula id;
     private Integer nota=null;
 
+    // Creamos una subclase dentro de matrícula para poder generar la ID
+    // de la base de datos
+    // que está compuesta por alumno, asigntura y año
+    public class IdMatricula {
+        private long alumno;
+        private long asignatura;
+        private int year;
+
+        public IdMatricula(long alumno, long asignatura, int year) {
+            this.alumno = alumno;
+            this.asignatura = asignatura;
+            this.year = year;
+        }
+
+        public long getAlumno() {
+            return alumno;
+        }
+
+        public void setAlumno(long alumno) {
+            this.alumno = alumno;
+        }
+
+        public long getAsignatura() {
+            return asignatura;
+        }
+
+        public void setAsignatura(long asignatura) {
+            this.asignatura = asignatura;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
+        
+        
+    }
+    
+    
     public Matricula(long alumno, long asignatura, int year) {
-        this.alumno = alumno;
-        this.asignatura = asignatura;
-        this.year = year;
+        this.id = new IdMatricula(alumno, asignatura, year);
     }
 
-    public long getAlumno() {
-        return alumno;
+    public Matricula(IdMatricula id) {
+        this.id = id;
     }
 
-    public void setAlumno(long alumno) {
-        this.alumno = alumno;
+    public IdMatricula getId() {
+        return id;
     }
 
-    public long getAsignatura() {
-        return asignatura;
-    }
-
-    public void setAsignatura(long asignatura) {
-        this.asignatura = asignatura;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setId(IdMatricula id) {
+        this.id = id;
     }
 
     public Integer getNota() {
@@ -55,9 +81,9 @@ public class Matricula {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + (int) (this.alumno ^ (this.alumno >>> 32));
-        hash = 97 * hash + (int) (this.asignatura ^ (this.asignatura >>> 32));
-        hash = 97 * hash + this.year;
+        hash = 97 * hash + (int) (this.getId().getAlumno() ^ (this.getId().getAlumno() >>> 32));
+        hash = 97 * hash + (int) (this.getId().getAsignatura() ^ (this.getId().getAsignatura() >>> 32));
+        hash = 97 * hash + this.getId().getYear();
         hash = 97 * hash + Objects.hashCode(this.nota);
         return hash;
     }
@@ -74,13 +100,13 @@ public class Matricula {
             return false;
         }
         final Matricula other = (Matricula) obj;
-        if (this.alumno != other.alumno) {
+        if (this.getId().getAlumno() != other.getId().getAlumno()) {
             return false;
         }
-        if (this.asignatura != other.asignatura) {
+        if (this.getId().getAsignatura()!= other.getId().getAsignatura()) {
             return false;
         }
-        if (this.year != other.year) {
+        if (this.getId().getYear() != other.getId().getYear()) {
             return false;
         }
         return Objects.equals(this.nota, other.nota);
@@ -88,7 +114,7 @@ public class Matricula {
 
     @Override
     public String toString() {
-        return "Matricula{" + "alumno=" + alumno + ", asignatura=" + asignatura + ", year=" + year + ", nota=" + nota + '}';
+        return "Matricula{" + "alumno=" + this.getId().getAlumno() + ", asignatura=" + this.getId().getAsignatura() + ", year=" + this.getId().getYear() + ", nota=" + nota + '}';
     }
     
     
