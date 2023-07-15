@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -53,7 +51,7 @@ public class MySQLAsignaturaDAO implements AsignaturaDAO{
                 try {
                     rs.close();
                 } catch (SQLException e) {
-                    new DAOException("Error en SQL", e);
+                    throw new DAOException("Error en SQL", e);
                 }
             }
             if(stat!=null){
