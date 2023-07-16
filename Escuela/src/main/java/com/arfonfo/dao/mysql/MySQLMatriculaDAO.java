@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,12 +73,18 @@ public class MySQLMatriculaDAO implements MatriculaDAO{
     }
 
     @Override
-    public void eliminar(Matricula a) {
+    public void eliminar(Matricula a) throws DAOException{
         PreparedStatement stat = null;
         try {
-            stat = con.prepareStatement(UPDATE);
-            
-        } catch (Exception e) {
+            stat = con.prepareStatement(DELETE);
+            stat.setLong(1, a.getId().getAlumno());
+            stat.setLong(2, a.getId().getAsignatura());
+            stat.setInt(3, a.getId().getYear());
+            if(stat.executeUpdate() == 0){
+                throw new DAOException("Puede que el borrado haya fallado");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error SQL", e);
         }
     }
     
@@ -97,28 +104,181 @@ public class MySQLMatriculaDAO implements MatriculaDAO{
     }
 
     @Override
-    public List<Matricula> obtenerTodos() {
+    public List<Matricula> obtenerTodos() throws DAOException{
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        List<Matricula> matriculas = new ArrayList<>();
         
+        try {
+            stat = con.prepareStatement(GETALL);
+            rs = stat.executeQuery();
+            
+            while(rs.next()){
+                matriculas.add(convertir(rs));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error en SQL", e);
+        } finally {
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+            if(stat != null){
+                try {
+                    stat.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+        }
+        return matriculas;
     }
 
     @Override
     public Matricula obtener(Matricula.IdMatricula id) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        Matricula m = null;
+        
+        try {
+            stat = con.prepareStatement(GETONE);
+            stat.setLong(1, id.getAlumno());
+            stat.setLong(2, id.getAsignatura());
+            stat.setInt(3, id.getYear());
+            rs = stat.executeQuery();
+            
+            if(rs.next()){
+                m = convertir(rs);
+            } else {
+                throw new DAOException("No se han encontrado registros");
+            }
+        } catch (SQLException e) {
+                throw new DAOException("No se ha encontrado ese registro", e);
+        } finally {
+             if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+            if(stat != null){
+                try {
+                    stat.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+        }
+        return m;
     }
     
     @Override
     public List<Matricula> obtenerPorAlumno(long alumno) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        List<Matricula> matAlumno = new ArrayList<>();
+        
+        try {
+            stat = con.prepareStatement(GETALU);
+            stat.setLong(1, alumno);
+            rs = stat.executeQuery();
+            
+            while(rs.next()){
+                matAlumno.add(convertir(rs));
+            }
+        } catch (SQLException e) {
+                throw new DAOException("No se ha encontrado ese registro", e);
+        } finally {
+             if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+            if(stat != null){
+                try {
+                    stat.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+        }
+        return matAlumno;
     }
 
     @Override
     public List<Matricula> obtenerPorAsignatura(long asignatura) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        List<Matricula> matAsignatura = new ArrayList<>();
+        
+        try {
+            stat = con.prepareStatement(GETASI);
+            stat.setLong(1, asignatura);
+            rs = stat.executeQuery();
+            
+            while(rs.next()){
+                matAsignatura.add(convertir(rs));
+            }
+        } catch (SQLException e) {
+                throw new DAOException("No se ha encontrado ese registro", e);
+        } finally {
+             if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+            if(stat != null){
+                try {
+                    stat.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+        }
+        return matAsignatura;
     }
 
     @Override
     public List<Matricula> obtenerPorCurso(int curso) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        List<Matricula> matCurso = new ArrayList<>();
+        
+        try {
+            stat = con.prepareStatement(GETCUR);
+            stat.setInt(1, curso);
+            rs = stat.executeQuery();
+            
+            while(rs.next()){
+                matCurso.add(convertir(rs));
+            }
+        } catch (SQLException e) {
+                throw new DAOException("No se ha encontrado ese registro", e);
+        } finally {
+             if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+            if(stat != null){
+                try {
+                    stat.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Error en SQL", e);
+                }
+            }
+        }
+        return matCurso;
     }
     
 }
