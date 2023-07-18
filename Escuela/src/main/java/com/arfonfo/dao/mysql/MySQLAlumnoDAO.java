@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class MySQLAlumnoDAO implements AlumnoDAO{
     
-    final String INSERT = "insert into alumnos(nombre, apellido, fecha_nac) values(?, ?, ?)";
+    final String INSERT = "insert into alumnos(nombre, apellidos, fecha_nac) values(?, ?, ?)";
     final String UPDATE = "update alumnos set nombre = ?, apellidos= ?, fecha_nac =? where id_alumno=?";
     final String DELETE = "delete from alumnos where id_alumno=?";
     final String GETALL = "select id_alumno, nombre, apellidos, fecha_nac from alumnos";
@@ -34,7 +35,7 @@ public class MySQLAlumnoDAO implements AlumnoDAO{
         PreparedStatement stat = null;
         ResultSet rs = null;
         try {
-            stat = con.prepareStatement(INSERT);
+            stat = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stat.setString(1, a.getNombre());
             stat.setString(2, a.getApellidos());
             stat.setDate(3, new Date(a.getFechaNacimiento().getTime()));
@@ -54,7 +55,7 @@ public class MySQLAlumnoDAO implements AlumnoDAO{
                 try {
                     rs.close();
                 } catch (SQLException e) {
-                    new DAOException("Error en SQL", e);
+                    throw new DAOException("Error en SQL", e);
                 }
             }
             if(stat!=null){

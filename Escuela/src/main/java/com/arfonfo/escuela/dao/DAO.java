@@ -2,7 +2,6 @@
 package com.arfonfo.escuela.dao;
 
 import com.arfonfo.dao.mysql.DAOException;
-import com.arfonfo.escuela.Alumno;
 import java.util.List;
 
 /**
