@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class MySQLProfesorDAO implements ProfesorDAO{
         PreparedStatement stat = null;
         ResultSet rs = null;
         try {
-            stat = con.prepareStatement(INSERT);
+            stat = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stat.setString(1, a.getNombre());
             stat.setString(2, a.getApellidos());
             if(stat.executeUpdate() == 0)
@@ -42,7 +43,7 @@ public class MySQLProfesorDAO implements ProfesorDAO{
             if(rs.next()){
                 a.setId(rs.getLong(1));
             } else {
-                throw new DAOException("No puedo asignar ID a este alumno");
+                throw new DAOException("No puedo asignar ID a este profesor");
             }
         } catch (SQLException e) {
             throw new DAOException("Error en SQL", e);
@@ -51,7 +52,7 @@ public class MySQLProfesorDAO implements ProfesorDAO{
                 try {
                     rs.close();
                 } catch (SQLException e) {
-                    new DAOException("Error en SQL", e);
+                    throw new DAOException("Error en SQL", e);
                 }
             }
             if(stat!=null){

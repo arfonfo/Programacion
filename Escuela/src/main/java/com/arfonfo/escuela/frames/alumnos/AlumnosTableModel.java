@@ -1,5 +1,5 @@
 
-package com.arfonfo.escuela.frames;
+package com.arfonfo.escuela.frames.alumnos;
 
 import com.arfonfo.dao.mysql.DAOException;
 import com.arfonfo.escuela.Alumno;

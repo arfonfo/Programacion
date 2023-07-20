@@ -1,10 +1,11 @@
 
-package com.arfonfo.escuela.frames;
+package com.arfonfo.escuela.frames.alumnos;
 
 import com.arfonfo.dao.mysql.DAOException;
 import com.arfonfo.dao.mysql.MySQLDaoManager;
 import com.arfonfo.escuela.Alumno;
 import com.arfonfo.escuela.dao.DAOManager;
+import com.arfonfo.escuela.frames.alumnos.AlumnosTableModel;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -25,8 +26,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         initComponents();
         this.manager = manager; 
         this.model = new AlumnosTableModel(manager.getAlumnoDAO());
-        this.model.updateModel();
         this.tabla.setModel(model);
+        obtenerDatos();
         this.tabla.getSelectionModel().addListSelectionListener(e -> {
             boolean seleccionValida = (tabla.getSelectedRow() != -1);
             editar.setEnabled(seleccionValida);
@@ -36,6 +37,12 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         borrar.setEnabled(false);
         guardar.setEnabled(false);
         cancelar.setEnabled(false);
+    }
+    
+    final void obtenerDatos() throws DAOException{
+        progreso.setText("Actualizando modelo...");
+        model.updateModel();
+        progreso.setText(model.getRowCount() + " alumnos visibles");
     }
     
  
@@ -52,16 +59,18 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         guardar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        progreso = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        detalle = new com.arfonfo.escuela.frames.DetalleAlumnoPanel();
+        detalle = new com.arfonfo.escuela.frames.alumnos.DetalleAlumnoPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        toolbar.setRollover(true);
+        setTitle("Registro de Alumnos");
 
         nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-48.png"))); // NOI18N
         nuevo.setText("Nuevo");
+        nuevo.setBorderPainted(false);
+        nuevo.setContentAreaFilled(false);
         nuevo.setFocusable(false);
         nuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         nuevo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -75,6 +84,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
 
         editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-48.png"))); // NOI18N
         editar.setText("Editar");
+        editar.setBorderPainted(false);
+        editar.setContentAreaFilled(false);
         editar.setFocusable(false);
         editar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         editar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -87,6 +98,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
 
         borrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-48.png"))); // NOI18N
         borrar.setText("Borrar");
+        borrar.setBorderPainted(false);
+        borrar.setContentAreaFilled(false);
         borrar.setFocusable(false);
         borrar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         borrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -100,6 +113,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
 
         guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-48.png"))); // NOI18N
         guardar.setText("Guardar");
+        guardar.setBorderPainted(false);
+        guardar.setContentAreaFilled(false);
         guardar.setFocusable(false);
         guardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         guardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -112,6 +127,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
 
         cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel-48.png"))); // NOI18N
         cancelar.setText("Cancelar");
+        cancelar.setBorderPainted(false);
+        cancelar.setContentAreaFilled(false);
         cancelar.setFocusable(false);
         cancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -125,6 +142,11 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         getContentPane().add(toolbar, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
+
+        progreso.setText("0 registros visibles.");
+        progreso.setToolTipText(tabla.getUIClassID());
+        progreso.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        jPanel1.add(progreso, java.awt.BorderLayout.PAGE_END);
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,7 +223,7 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
             guardar.setEnabled(false);
             cancelar.setEnabled(false);
             
-            model.updateModel();
+            obtenerDatos();
             // Este método le dice al listener de la tabla que ha cambiado el valor
             model.fireTableDataChanged();
          } catch (DAOException | ParseException ex) {
@@ -216,7 +238,7 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
             try {
                 Alumno alumno = getAlumnoSeleccionado();
                 manager.getAlumnoDAO().eliminar(alumno);
-                model.updateModel();
+                obtenerDatos();
                 model.fireTableDataChanged();
             } catch (DAOException ex) {
                 Logger.getLogger(ListaAlumnosFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,6 +249,8 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    // QUITAR CUANDO ESTÉN CREADOS EL RESTO DE FRAMES 
     public static void main(String args[]) throws SQLException {
         DAOManager manager = new MySQLDaoManager("localhost", "root", "", "escuela");
          java.awt.EventQueue.invokeLater(() -> {
@@ -241,7 +265,7 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton borrar;
     private javax.swing.JButton cancelar;
-    private com.arfonfo.escuela.frames.DetalleAlumnoPanel detalle;
+    private com.arfonfo.escuela.frames.alumnos.DetalleAlumnoPanel detalle;
     private javax.swing.JButton editar;
     private javax.swing.JButton guardar;
     private javax.swing.JPanel jPanel1;
@@ -249,6 +273,7 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JButton nuevo;
+    private javax.swing.JLabel progreso;
     private javax.swing.JTable tabla;
     private javax.swing.JToolBar toolbar;
     // End of variables declaration//GEN-END:variables
