@@ -106,7 +106,7 @@ public class MySQLAsignaturaDAO implements AsignaturaDAO{
     
     private Asignatura convertir(ResultSet rs) throws SQLException {
         String nombre = rs.getString("nombre");
-        Long idProfesor = rs.getLong("id_profesor");
+        Long idProfesor = rs.getLong("profesor");
         Asignatura asignatura = new Asignatura(nombre, idProfesor);
         asignatura.setId(rs.getLong("id_asignatura"));
         return asignatura;
