@@ -3,8 +3,12 @@ package com.arfonfo.escuela.frames.asignaturas;
 
 import com.arfonfo.dao.mysql.DAOException;
 import com.arfonfo.dao.mysql.MySQLDaoManager;
+import com.arfonfo.escuela.Asignatura;
 import com.arfonfo.escuela.dao.DAOManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,17 +16,25 @@ import java.sql.SQLException;
  */
 public class ListAsigFrame extends javax.swing.JFrame {
 
+    private DAOManager manager;
+    
     private AsignaturasTableModel modelo;    
     
     public ListAsigFrame(DAOManager manager) throws DAOException {
         initComponents();
+        this.manager = manager;
         this.modelo = new AsignaturasTableModel(manager.getAsignaturaDAO());
         this.tabla.setModel(modelo);
-        this.modelo.update();
+        updateTable();
         this.detalle.setEditable(false);
         this.detalle.setAsignatura(null);
         activarBotonesCRUD(false);
         activarBotonesGuardar(false);
+        
+        tabla.getSelectionModel().addListSelectionListener(e -> {
+            boolean valida = tabla.getSelectedRow() != -1;
+            activarBotonesCRUD(valida);
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -154,21 +166,44 @@ public class ListAsigFrame extends javax.swing.JFrame {
         detalle.loadData();
     }//GEN-LAST:event_nuevoActionPerformed
 
+    Asignatura obtenerAsignaturaSeleccionada() throws DAOException{
+        long identificador = (long ) tabla.getValueAt(tabla.getSelectedRow(), 0);
+        return manager.getAsignaturaDAO().obtener(identificador);
+    }
+    
     private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
-
+        try {
+            activarBotonesGuardar(true);
+            detalle.setEditable(true);
+            detalle.setAsignatura(obtenerAsignaturaSeleccionada());
+            detalle.loadData();
+        } catch (DAOException ex) {
+            Logger.getLogger(ListAsigFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_editarActionPerformed
 
     private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
-
+        if(JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar esta asignatura?", 
+                "Borrar asignatura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+            try {
+                Asignatura a = obtenerAsignaturaSeleccionada();
+                manager.getAsignaturaDAO().eliminar(a);
+                updateTable();
+                activarBotonesCRUD(false);
+            } catch (DAOException ex) {
+                Logger.getLogger(ListAsigFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_borrarActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-      
+      detalle.saveData();
     }//GEN-LAST:event_guardarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         detalle.setAsignatura(null);
-        detalle.setEditable(false );
+        detalle.setEditable(false);
+        detalle.loadData();
         activarBotonesCRUD(false);
         activarBotonesGuardar(false);
         // De esta manera quitamos todas las selecciones de la tabla si estamos editando un registro que ya existe 
@@ -213,4 +248,9 @@ public class ListAsigFrame extends javax.swing.JFrame {
     private javax.swing.JButton nuevo;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+
+    private void updateTable() throws DAOException {
+        this.modelo.update();
+        this.modelo.fireTableDataChanged();
+    }
 }
